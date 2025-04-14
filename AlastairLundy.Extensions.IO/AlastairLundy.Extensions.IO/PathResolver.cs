@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+
 using AlastairLundy.Extensions.IO.Abstractions.Paths;
 
 using AlastairLundy.Resyslib.IO.Files;
@@ -192,6 +193,12 @@ namespace AlastairLundy.Extensions.IO
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path1"></param>
+        /// <param name="path2"></param>
+        /// <returns></returns>
         public string CombinePaths(string path1, string path2)
         {
             StringBuilder stringBuilder = new StringBuilder();
