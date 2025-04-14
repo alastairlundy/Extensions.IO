@@ -30,7 +30,8 @@ namespace AlastairLundy.Extensions.IO.Abstractions.Paths
         FileModel GetFile(string path);
         string GetFileNameWithoutExtension(string path);
         string GetFileName(string path);
-        string GetPathExtension(string path);
+
+        string GetFileNameExtension(string filePath);
     
         string CombinePaths(string path1, string path2);
         
