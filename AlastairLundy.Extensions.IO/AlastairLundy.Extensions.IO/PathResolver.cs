@@ -26,6 +26,10 @@ namespace AlastairLundy.Extensions.IO
         
         public bool DoesPathHaveExtension(string path)
         {
+            if (DoesPathExist(path))
+            {
+                
+            }
             
         }
 
