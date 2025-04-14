@@ -8,8 +8,10 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
-
+using System.Linq;
+using System.Text;
 using AlastairLundy.Extensions.IO.Abstractions.Paths;
 
 using AlastairLundy.Resyslib.IO.Files;
@@ -192,7 +194,36 @@ namespace AlastairLundy.Extensions.IO
 
         public string CombinePaths(string path1, string path2)
         {
-            
+            StringBuilder stringBuilder = new StringBuilder();
+
+            List<string> path1Components =  path1.Split(' ').ToList();
+            List<string> path2Components = path2.Split(' ').ToList();
+
+           for(int i = 0; i < path1Components.Count; i++)
+           {
+               if (path1Components[i].Equals(path2Components[i]))
+               {
+                   stringBuilder.Append(path1Components[i]);
+                   stringBuilder.Append(Path.DirectorySeparatorChar);
+                   
+                   path1Components.RemoveAt(i);
+                   path2Components.RemoveAt(i);
+               }
+           }
+
+           foreach (string component in path1Components)
+           {
+               stringBuilder.Append(component);
+               stringBuilder.Append(Path.DirectorySeparatorChar);
+           }
+
+           foreach (string component in path2Components)
+           {
+               stringBuilder.Append(component);
+               stringBuilder.Append(Path.DirectorySeparatorChar);
+           }
+
+           return stringBuilder.ToString();
         }
 
         public string ExpandEnvironmentVariablesInPath(string path)
