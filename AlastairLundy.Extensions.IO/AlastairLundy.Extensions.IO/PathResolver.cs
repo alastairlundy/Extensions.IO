@@ -1,4 +1,8 @@
-﻿using AlastairLundy.Extensions.IO.Abstractions.Paths;
+﻿using System;
+using System.IO;
+    
+using AlastairLundy.Extensions.IO.Abstractions.Paths;
+
 using AlastairLundy.Resyslib.IO.Files;
 using AlastairLundy.Resyslib.IO.Paths;
 
@@ -23,7 +27,16 @@ namespace AlastairLundy.Extensions.IO
 
         public bool IsPathFullyQualified(string path)
         {
-            throw new System.NotImplementedException();
+            bool exists = DoesPathExist(path);
+
+            if (exists)
+            {
+                
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public string ToRelativePath(string path)
@@ -46,14 +59,41 @@ namespace AlastairLundy.Extensions.IO
             
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public string GetFileNameWithoutExtension(string path)
         {
-            throw new System.NotImplementedException();
+            string fileName = GetFileName(path);
+            
+            int extensionLength = fileName.Length - fileName.LastIndexOf('.');
+            
+            string extension = fileName.Substring(fileName.LastIndexOf(".",
+                StringComparison.Ordinal), extensionLength);
+            
+           return fileName.Remove(fileName.IndexOf(extension,
+               StringComparison.Ordinal), extension.Length);
         }
 
+        
         public string GetFileName(string path)
         {
+            string normalizedPath = NormalizePath(path);
+            
+            string actualPath = ToAbsolutePath(normalizedPath);
 
+            bool hasExtension = DoesPathHaveExtension(actualPath);
+
+            if (hasExtension)
+            {
+                return actualPath;
+            }
+            else
+            {
+                
+            }
         }
 
         public string CombinePaths(string path1, string path2)
