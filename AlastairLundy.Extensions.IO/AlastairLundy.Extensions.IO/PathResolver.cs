@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-    
+
 using AlastairLundy.Extensions.IO.Abstractions.Paths;
 
 using AlastairLundy.Resyslib.IO.Files;
@@ -10,6 +10,8 @@ namespace AlastairLundy.Extensions.IO
 {
     public class PathResolver : IPathResolver
     {
+        
+        
         public bool DoesPathHaveExtension(string path)
         {
             
@@ -30,6 +32,11 @@ namespace AlastairLundy.Extensions.IO
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public bool DoesPathExist(string path)
         {
             try
@@ -64,6 +71,12 @@ namespace AlastairLundy.Extensions.IO
             }
         }
 
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public string ToRelativePath(string path)
         {
             string newPath = NormalizePath(path);
@@ -101,6 +114,7 @@ namespace AlastairLundy.Extensions.IO
             
         }
 
+        
         public string NormalizePath(string path)
         {
             string newPath = path.Normalize();
@@ -112,6 +126,11 @@ namespace AlastairLundy.Extensions.IO
             return newPath;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public FileModel GetFile(string path)
         {
             if (DoesPathExist(path))
