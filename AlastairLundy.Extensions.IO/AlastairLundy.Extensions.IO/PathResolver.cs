@@ -17,12 +17,37 @@ namespace AlastairLundy.Extensions.IO
 
         public PathType GetPathType(string path)
         {
-            
+            if (DoesPathExist(path))
+            {
+                if (path.EndsWith(Path.DirectorySeparatorChar))
+                {
+                    return PathType.Directory;
+                }
+                else
+                {
+                    
+                }
+            }
         }
 
         public bool DoesPathExist(string path)
         {
-            
+            try
+            {
+                if (File.Exists(path) || Directory.Exists(path))
+                {
+                    return true;
+                }
+
+                string normalized = NormalizePath(path);
+                string absolutePath = ToAbsolutePath(normalized);
+
+                return File.Exists(absolutePath) || Directory.Exists(absolutePath);
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public bool IsPathFullyQualified(string path)
@@ -31,7 +56,7 @@ namespace AlastairLundy.Extensions.IO
 
             if (exists)
             {
-                
+                return path.Equals(ToAbsolutePath(path));
             }
             else
             {
@@ -41,7 +66,34 @@ namespace AlastairLundy.Extensions.IO
 
         public string ToRelativePath(string path)
         {
+            string newPath = NormalizePath(path);
             
+            int colonIndex = newPath.IndexOf(":", StringComparison.Ordinal);
+            int slashIndex = newPath.IndexOf(@"\", StringComparison.Ordinal);
+            
+            newPath = newPath.Replace("::", string.Empty);
+
+            if (colonIndex != -1 && slashIndex != -1 && slashIndex == (colonIndex + 1))
+            {
+                int remainingLength = newPath.Length - colonIndex;
+
+                newPath = newPath.Substring(slashIndex + 1, remainingLength);
+            }
+            else
+            {
+                if (colonIndex != -1)
+                {
+                    int remainingLength = newPath.Length - colonIndex;
+
+                    newPath = newPath.Substring(colonIndex, remainingLength);
+                }
+                else
+                {
+                    newPath = newPath.Replace(@"\\?\", string.Empty);
+                }
+            }
+            
+            return newPath;
         }
 
         public string ToAbsolutePath(string path)
@@ -51,12 +103,26 @@ namespace AlastairLundy.Extensions.IO
 
         public string NormalizePath(string path)
         {
+            string newPath = path.Normalize();
             
+            newPath = newPath.Replace("//", Path.DirectorySeparatorChar.ToString());
+            newPath = newPath.Replace("\\", Path.DirectorySeparatorChar.ToString());
+            
+            
+            return newPath;
         }
 
         public FileModel GetFile(string path)
         {
+            if (DoesPathExist(path))
+            {
+                return new FileModel(path);
+            }
             
+            string normalized = NormalizePath(path);
+            normalized = ToAbsolutePath(normalized);
+            
+            return new FileModel(normalized);
         }
 
         /// <summary>
